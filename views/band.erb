@@ -1,0 +1,49 @@
+<h2><%= @band.band_name() %></h2>
+
+<% if @venues.any?() %>
+<ul>
+  <% @venues.each() do |venue| %>
+  <li><a href="/venues/<%= venue.id() %>"><%= venue.venue_name() %></a></li>
+  <% end %>
+</ul>
+<% else %>
+<p>No venues listed</p>
+<% end %>
+
+<section>
+<form action="/bands/<%= @band.id() %>" method="post">
+  <fieldset>
+    <legend>Add a venue:</legend>
+    <label>Venue</label>
+    <input name="band_id" hidden value="<%= @band.id() %>" />
+    <input name="venue_name" />
+    <button type="submit">Add your venue</button>
+  </fieldset>
+</form>
+</section>
+
+<section>
+<form action="/venues/<%= @band.id() %>" method="post">
+  <input name="_method" value="patch" hidden>
+  <fieldset>
+    <legend>Edit Band Name:</legend>
+    <label>Edit Name</label>
+    <input name="band_id" hidden value="<%= @band.id() %>" />
+    <input name="band_name" value="<%= @band.band_name() %>"/>
+
+    <button type="submit">Edit</button>
+  </fieldset>
+</form>
+</section>
+
+<section>
+<form action="/venues/<%= @band.id() %>" method="post">
+  <input name="_method" value="delete" hidden>
+  <fieldset>
+    <legend>Delete this venue. (This can't be undone!)</legend>
+    <button type="submit">Delete</button>
+  </fieldset>
+</form>
+</section>
+
+<a href="/">Go back</a>

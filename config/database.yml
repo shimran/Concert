@@ -1,7 +1,8 @@
 
 development:
-adapter: postgresql
-database: concert_development
+  adapter: postgresql
+  database: concert_development
+
 test:
-adapter: postgresql
-database: concert_test
+  adapter: postgresql
+  database: concert_test
