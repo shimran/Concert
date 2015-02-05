@@ -2,73 +2,84 @@ require("bundler/setup")
 Bundler.require(:default)
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 
-
 get('/') do
   @bands = Band.all()
+  @venues = Venue.all()
   erb(:index)
 end
 
 post('/bands') do
-  band_name = params.fetch("band_name")
-  @band = Band.create({:band_name => band_name})
   @bands = Band.all()
-  erb(:index)
+  name = params.fetch('name')
+  @band = Band.new({:band_name => name})
+  @band.save()
+  redirect '/'
+end
+
+post('/venues') do
+  @venues = Venue.all()
+  name = params.fetch('name')
+  @venue = Venue.new({:venue_name => name})
+  @venue.save()
+  redirect '/'
 end
 
 get('/bands/:id') do
-  @band = Band.find(params['id'].to_i())
-  #Get 'id' is already in Active Record database for band
-  @venues = @band.venues()
-  #ActiveRecord already knows the relationship, @band.venues() asks for
-  #all venues with the same band iD.
+  id = params.fetch("id").to_i()
+  @band = Band.find(id)
+  @venues = Venue.all()
   erb(:band)
 end
 
-post('/bands/:id') do
-  venue_name = params.fetch("venue_name")
-  band_id = params.fetch("band_id")
-  @venue = Venue.create({:venue_name => venue_name, :band_id => band_id})
-  @band = Band.find(params['id'].to_i())
-  @venues = @band.venues()
-  erb(:band)
+patch('/bands_venues_add') do
+  id = params.fetch("id")
+  @band = Band.find(id)
+  venue_ids_array = params.fetch("venue_ids_array") + @band.venue_ids
+  @band.update({:venue_ids => venue_ids_array})
+  redirect back
 end
 
 patch('/bands/:id') do
-  @band = Band.find(params['id'].to_i())
-  band_id = params.fetch("band_id")
-  #Same view, so we dont ned to fetch from database, just from the views page.
-  band_name = params.fetch("band_name")
-  @band.update({ :band_name => band_name })
-  @venues = @band.venues()
-  erb(:band)
+  name = params.fetch("band_name")
+  id = params.fetch("id").to_i()
+  @band = Band.find(id)
+  @band.update({:band_name => name})
+  redirect back
 end
 
 delete('/bands/:id') do
-  @band = Band.find(params['id'].to_i())
-  @band.delete()
-  @band.venues.delete()
-  #You must delete venues associated survey_id, otherwise they just sit in database
-  #without an id. Just deleting survey_id does not automatically clear venues in DB.
-  @bands = Band.all()
-  erb(:index)
+  id = params.fetch("id").to_i()
+  @band = Band.find(id)
+  @band.destroy()
+  redirect '/'
 end
 
 get('/venues/:id') do
-  @venue = Venue.find(params['id'].to_i())
+  id = params.fetch("id").to_i()
+  @venue = Venue.find(id)
+  @bands = Band.all()
   erb(:venue)
+end
+
+patch('/venues_bands_add') do
+  id = params.fetch("id")
+  @venue = Venue.find(id)
+  band_ids_array = params.fetch("band_ids_array") + @venue.band_ids
+  @venue.update({:band_ids => band_ids_array})
+  redirect back
 end
 
 patch('/venues/:id') do
-  @venue = Venue.find(params['id'].to_i())
-  venue_name = params.fetch("venue_name")
-  @venue.update({:venue_name => venue_name})
-  erb(:venue)
+  name = params.fetch("venue_name")
+  id = params.fetch("id").to_i()
+  @venue = Venue.find(id)
+  @venue.update({:venue_name => name})
+  redirect back
 end
 
 delete('/venues/:id') do
-  @venue = Venue.find(params['id'].to_i())
-  band_id = @venue.band_id()
-  @venue.delete()
-  redirect "/bands/#{band_id}"
-#String interpolation needed for the redirect, need double quotes ""
+  id = params.fetch("id").to_i()
+  @venue = Venue.find(id)
+  @venue.destroy()
+  redirect '/'
 end

@@ -1,49 +1,42 @@
-<h2><%= @band.band_name() %></h2>
-
-<% if @venues.any?() %>
-<ul>
-  <% @venues.each() do |venue| %>
-  <li><a href="/venues/<%= venue.id() %>"><%= venue.venue_name() %></a></li>
-  <% end %>
-</ul>
-<% else %>
-<p>No venues listed</p>
+<h1><%= @band.band_name() %></h1>
+<% if @band.venues().any? %>
+<h3><u><%= @band.band_name() %> Have Played Here:</u></h3>
+<% @band.venues().alphabetical().each() do |venue| %>
+<li><%= venue.venue_name() %></li>
 <% end %>
-
-<section>
+<% else %>
+No concert show history for <%= @band.band_name() %> available yet... Add venues to their show history below.
+<% end %>
+<h3><u>Add Venues To <%= @band.band_name() %>'s Show History</u></h3>
+<% if @venues.any? %>
+<% @venues.alphabetical().each() do |venue| %>
+<form action="/bands_venues_add" method="post">
+<input type="hidden" name="_method" value="patch">
+<div class="checkbox">
+<label>
+<input type="hidden" name="id" value="<%=@band.id %>">
+<input type="checkbox" id="venue_ids_array[]" name="venue_ids_array[]" value="<%= venue.id() %>">
+<%= venue.venue_name() %></a>
+</label>
+</div>
+<% end %>
+<% else %>
+There are no venues to select from yet.
+<% end %>
+<button type="submit" class="button">Add Venues To <%= @band.band_name %>'s Played History</button>
+</form>
+<br>
+<a href="/">Back To Homepage</a>
+<p>
 <form action="/bands/<%= @band.id() %>" method="post">
-  <fieldset>
-    <legend>Add a venue:</legend>
-    <label>Venue</label>
-    <input name="band_id" hidden value="<%= @band.id() %>" />
-    <input name="venue_name" />
-    <button type="submit">Add your venue</button>
-  </fieldset>
+<input name="_method" type="hidden" value="patch">
+<label for="name"><b>Rename Band:</b></label>
+<input id="name" name="name" type="text">
+<button type="submit">Update Band Name</button>
 </form>
-</section>
-
-<section>
-<form action="/venues/<%= @band.id() %>" method="post">
-  <input name="_method" value="patch" hidden>
-  <fieldset>
-    <legend>Edit Band Name:</legend>
-    <label>Edit Name</label>
-    <input name="band_id" hidden value="<%= @band.id() %>" />
-    <input name="band_name" value="<%= @band.band_name() %>"/>
-
-    <button type="submit">Edit</button>
-  </fieldset>
+</p>
+<p>
+<form action="/bands/<%= @band.id() %>" method="post">
+<input name="_method" type="hidden" value="delete">
+<button type="submit">Delete <%= @band.band_name %> From Database</button>
 </form>
-</section>
-
-<section>
-<form action="/venues/<%= @band.id() %>" method="post">
-  <input name="_method" value="delete" hidden>
-  <fieldset>
-    <legend>Delete this venue. (This can't be undone!)</legend>
-    <button type="submit">Delete</button>
-  </fieldset>
-</form>
-</section>
-
-<a href="/">Go back</a>

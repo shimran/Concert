@@ -1,20 +1,35 @@
-<h2>Bands</h2>
+<h2>Bands playing in ShimCity:</h2>
 
 <% if @bands.any?() %>
-<ul>
-  <% @bands.each() do |band| %>
-  <li><a href="/bands/<%= band.id() %>"><%= band.band_name() %></a></li>
-  <% end %>
-</ul>
-<% else %>
-<p>No bands available</p>
+<% @bands.alphabetical().each() do |band| %>
+<li><a href="/bands/<%= band.id %>"><%= band.band_name() %></a></li>
 <% end %>
+<% else %>
+<p>No bands yet.</p>
+<% end %>
+<br>
 
+<h2>Venues in the ShimCity limits:</h3>
+<% if @venues.any? %>
+<% @venues.alphabetical().each() do |venue| %>
+<li><a href="/venues/<%= venue.id %>"><%= venue.venue_name() %></a></li>
+<% end %>
+<% else %>
+<p>No venues yet. </p>
+<% end %>
+<br>
+<h3><i>Create a new band:</i></h3>
 <form action="/bands" method="post">
-  <fieldset>
-    <legend>Add a band</legend>
-    <label>Band Name:</label>
-    <input name="band_name" />
-    <button type="submit">Input band</button>
-  </fieldset>
+<label for="name">Band name:</label>
+<input type="text" name="name" id="name">
+<button class="button" type="submit">Add Band</button>
 </form>
+<br>
+<h3><i>Create a new venue:</i></h3>
+<form action="/venues" method="post">
+<label for="name">Venue name:</label>
+<input type="text" name="name" id="name">
+<button class="button" type="submit">Add Venue</button>
+</form>
+
+<!--  Put placeholder="Enter Band"  in input tag for predefined input -->
