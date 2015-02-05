@@ -4,13 +4,13 @@ Bundler.require(:default, :test)
 Dir[File.dirname(__FILE__) + "/../lib/*.rb"].each { |file| require file }
   RSpec.configure do |config|
     config.after(:each) do
-      Venue.all().each() do |question|
-        question.destroy()
+      Venue.all().each() do |venue|
+        venue.destroy()
       end
     end
     config.after(:each) do
-      Band.all().each() do |survey|
-        survey.destroy()
+      Band.all().each() do |band|
+        band.destroy()
       end
-    end
+     end
   end

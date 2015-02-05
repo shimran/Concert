@@ -2,7 +2,9 @@
 development:
   adapter: postgresql
   database: concert_development
-
+  template: template0
+  
 test:
   adapter: postgresql
   database: concert_test
+  template: template0
