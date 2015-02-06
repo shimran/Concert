@@ -40,7 +40,7 @@ patch('/bands_venues_add') do
 end
 
 patch('/bands/:id') do
-  name = params.fetch("band_name")
+  name = params.fetch("name")
   id = params.fetch("id").to_i()
   @band = Band.find(id)
   @band.update({:band_name => name})
@@ -70,7 +70,7 @@ patch('/venues_bands_add') do
 end
 
 patch('/venues/:id') do
-  name = params.fetch("venue_name")
+  name = params.fetch("name")
   id = params.fetch("id").to_i()
   @venue = Venue.find(id)
   @venue.update({:venue_name => name})
