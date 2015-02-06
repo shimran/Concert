@@ -2,6 +2,12 @@ require('spec_helper')
 
 
 describe(Band) do
+  it{should have_and_belong_to_many(:venues)}
+
+  it("validates presence of band_name") do
+    band = Band.new({:band_name => ""})
+    expect(band.save()).to(eq(false))
+  end
 
   it("capitalizes the first letter of band name") do
     band = Band.create({:band_name => "strokes"})
