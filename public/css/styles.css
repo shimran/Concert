@@ -1,0 +1,72 @@
+.cf:before,
+.cf:after {
+  content: " "; /* 1 */
+  display: table; /* 2 */
+}
+
+.cf:after {
+  clear: both;
+}
+
+
+
+body {
+
+  background-color: rgb(202,35,31);
+  font-family: 'Lobster', cursive;
+  color: #ffffff;
+
+
+}
+
+
+
+a
+{
+    color: #01080F;
+
+}
+
+li
+{
+  list-style-type: none;
+  color: #01080F;
+
+}
+
+input
+{
+
+  color: #01080F;
+
+}
+
+button
+{
+
+  color: #01080F;
+}
+.left
+{
+
+  float:left;
+  width:48%;
+  padding-bottom:40px
+}
+
+.right{
+
+  float:right;
+  width: 48%;
+
+}
+.fa{
+
+  font-size:300px
+}
+
+.venues{
+
+  display:block;
+  clear:both;
+}
